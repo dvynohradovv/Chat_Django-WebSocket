@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="field">
+    <p><b>Join room</b></p><br>
     <label>Room name</label>
-
     <div class="control">
         <input class="input" type="text" placeholder="Room name" id="room-name-input">
     </div>
@@ -15,6 +15,22 @@
         <a class="button is-info" id="room-name-submit">Submit</a>
     </div>
 </div>
+
+<form method="post"><br>
+    {% csrf_token %}
+    <div class="field">
+        <div class="control">
+            <p><b>Create room</b></p><br>
+            {{ form }}
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button class="button is-info" type="submit" id="submit">Submit</button>
+        </div>
+    </div>
+</form>
+
 {% endblock %}
 
 {% block scripts %}

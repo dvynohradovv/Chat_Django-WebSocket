@@ -2,11 +2,11 @@ from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.views.generic import FormView, View
+from django.views.generic import FormView, View, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import LoginForm
-from .models import User
+from .forms import LoginForm, ChatRoomForm
+from .models import User, Chatroom
 
 
 def logout_view(request):
@@ -63,9 +63,27 @@ class LoginView(View):
 class IndexView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         user = request.user
+        form = ChatRoomForm()
         context = {
-            'username': user.username
+            'username': user.username,
+            'form': form
         }
+        return render(request, 'chat/index.html', context)
+
+    def post(self, request):
+        user = request.user
+        form = ChatRoomForm(request.POST)
+        if form.is_valid():
+            print("valid form")
+            chatroom = form.save()
+            chatroom.creator = user
+            chatroom.save()
+            return redirect(reverse("index", args=[chatroom.name]))
+        context = {
+            'username': user.username,
+            'form': form
+        }
+        print("invalid form")
         return render(request, 'chat/index.html', context)
 
 
@@ -75,10 +93,16 @@ class ChatRoomView(LoginRequiredMixin, View):
         room_name = kwargs["room_name"]
 
         has_invite = user.chatroom_invitations.filter(name=room_name).exists()
-        if not has_invite:
-            return HttpResponseBadRequest("You have no invite!")
+        is_creator = user.created_chatrooms.filter(name=room_name).exists()
+        if not has_invite and not is_creator:
+            return HttpResponseBadRequest("You have no access!")
+
         context = {
             'room_name': room_name,
             'username': user.username,
         }
         return render(request, 'chat/room.html', context)
+
+
+class ChatRoomCreateView(CreateView):
+    model = Chatroom

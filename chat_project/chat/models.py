@@ -4,7 +4,7 @@ from django.db import models
 
 # Create your models here.
 class Chatroom(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
     creator = models.ForeignKey("chat.User", null=True, on_delete=models.SET_NULL, related_name="created_chatrooms")
 
 

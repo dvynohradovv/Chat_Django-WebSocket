@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
+from .models import Chatroom
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(
@@ -14,3 +16,12 @@ class LoginForm(forms.Form):
             if not char.isalpha():
                 raise ValidationError("Only letters!")
         return data
+
+
+class ChatRoomForm(forms.ModelForm):
+    name = forms.CharField(widget=forms.TextInput(
+        attrs={"class": "input", "placeholder": "New Chatroom"}))
+
+    class Meta:
+        model = Chatroom
+        fields = ["name"]

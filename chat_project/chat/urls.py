@@ -21,7 +21,9 @@ from .views import IndexView, ChatRoomView, LoginView, logout_view
 urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', logout_view),
-    # path('login/<str:room_name>/', LoginView.as_view()),
+
     path('room/', IndexView.as_view(), name="index"),
+    # path('create-room/', ChatRoomView.as_view(), name="create-room"),
+    path('room/<str:room_name>/edit', ChatRoomView.as_view(), name="edit-room"),
     path('room/<str:room_name>/', ChatRoomView.as_view(), name="room"),
 ]
