@@ -22,6 +22,6 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
     path('logout/', logout_view),
     # path('login/<str:room_name>/', LoginView.as_view()),
-    path('', IndexView.as_view(), name="index"),
-    path('<str:room_name>/', ChatRoomView.as_view(), name="room"),
+    path('room/', IndexView.as_view(), name="index"),
+    path('room/<str:room_name>/', ChatRoomView.as_view(), name="room"),
 ]
