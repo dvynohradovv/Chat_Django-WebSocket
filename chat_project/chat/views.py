@@ -74,7 +74,6 @@ class IndexView(LoginRequiredMixin, View):
         user = request.user
         form = ChatRoomForm(request.POST)
         if form.is_valid():
-            print("valid form")
             chatroom = form.save()
             chatroom.creator = user
             chatroom.save()
@@ -83,7 +82,6 @@ class IndexView(LoginRequiredMixin, View):
             'username': user.username,
             'form': form
         }
-        print("invalid form")
         return render(request, 'chat/index.html', context)
 
 
