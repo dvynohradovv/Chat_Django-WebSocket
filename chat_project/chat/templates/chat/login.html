@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Auth{% endblock %}
+{% block subtitle %}Login in your account:{% endblock %}
+{% block content %}
+<form method="{{ method }}">
+    {% csrf_token %}
+    <div class="field">
+        <div class="control">
+            {% if validation_error %}
+            <div class="notification is-danger">
+                <p>Validation errors:</p><br>
+                <p>{{ validation_error }}</p><br>
+                <a href="/chat/login/">back</a>
+            </div>
+            {% endif %}
+
+            {% if method == "get" %}
+            <label>Username</label>
+            {{ form.username }}
+            {% else %}
+            <p><b>{{ submit_text }}</b></p><br>
+            <label>Username</label>
+            <input class="input" type="text" value="{{ username }}" readonly>
+            <label>Password</label>
+            {{ form.password }}
+            {% endif %}
+            <!--        <input class="input" type="text" placeholder="Username" id="user-name-input">-->
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <!--        <a class="button is-info" id="user-name-submit">Submit</a>-->
+            <button class="button is-info" type="submit" id="submit">Submit</button>
+        </div>
+    </div>
+</form>
+{% endblock %}
