@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Room{% endblock %}
+
+{% block content %}
+<form method="post"><br>
+    {% csrf_token %}
+    <div class="field">
+        <div class="control">
+            <p><b>Invite user</b></p><br>
+            {% if result %}
+                <p><b>Operation result is: {{result}}</b></p><br>
+            {% endif %}
+            <input class="input" type="text" name="username" placeholder="Username" id="username-input">
+        </div>
+    </div>
+    <div class="field">
+        <div class="control">
+            <button class="button is-info" type="submit" id="submit">Submit</button>
+        </div>
+    </div>
+</form>
+{% endblock %}

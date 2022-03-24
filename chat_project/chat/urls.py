@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from .views import IndexView, ChatRoomView, LoginView, logout_view
+from .views import IndexView, ChatRoomView, LoginView, logout_view, EditChatRoomView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name="login"),
@@ -24,6 +24,6 @@ urlpatterns = [
 
     path('room/', IndexView.as_view(), name="index"),
     # path('create-room/', ChatRoomView.as_view(), name="create-room"),
-    path('room/<str:room_name>/edit', ChatRoomView.as_view(), name="edit-room"),
+    path('room/<str:room_name>/edit/', EditChatRoomView.as_view(), name="edit-room"),
     path('room/<str:room_name>/', ChatRoomView.as_view(), name="room"),
 ]
