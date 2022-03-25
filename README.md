@@ -24,13 +24,13 @@
 # `/chat/room/`
 ## ● Дать возможность юзерам создавать свои чатрумы
 ![image](https://user-images.githubusercontent.com/55922843/160150763-3d1787ed-691b-4c3f-8cd8-04ae67f8dc28.png)
-`/chat/room/:name/edit/`
+# `/chat/room/:name/edit/`
 ## (другие юзеры могут подлючиться в них только после приглашения).
 ![image](https://user-images.githubusercontent.com/55922843/160150891-031afbc9-9dbf-406c-b178-bf021dcc6300.png)
 ## Информацию о юзерах в каждом чатруме хранить в базе данных (one-to-many).
 ![image](https://user-images.githubusercontent.com/55922843/160151347-0a10124d-1f4a-4a3a-949a-3eb4d087e36f.png)
 
-`/chat/logging/chatroom<name>.txt`
+# `/chat/logging/chatroom<name>.txt`
 ## ● Все сообщения сохранять в лог-файл с временем сообщения и никнеймом.
 ![image](https://user-images.githubusercontent.com/55922843/160150645-2fcce6cc-7e0d-4a7e-9a58-ac119e487aff.png)
 ## Для каджого чатрума - отдельный лог-файл.
