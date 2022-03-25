@@ -7,6 +7,7 @@
 ![image](https://user-images.githubusercontent.com/55922843/160144979-3f0001ad-806c-4c34-bcce-d496d1ba03eb.png)
 ## если есть - запросить пароль.
 ![image](https://user-images.githubusercontent.com/55922843/160144805-1c057c60-f79e-4c02-97ae-635015ba1143.png)
+![image](https://user-images.githubusercontent.com/55922843/160153316-b7d4a4cb-ec1b-4672-b53e-f58f90e3903c.png)
 ## (можно без функционала восстановления пароля). Пароль пользователя хранить в виде хеша.
 ![image](https://user-images.githubusercontent.com/55922843/160145166-fcf18b7f-d98e-47a7-9e03-f28c906af060.png)
 
