@@ -39,50 +39,36 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from WebSocket
     def receive(self, text_data):
         data = json.loads(text_data)
+
         type = data["type"]
         username = data['username']
-
-        msg = {}
+        msg = {
+            'type': type,
+            'username': username
+        }
         if type == "join_message":
-
-            color = ChatConsumer.rnd_color()
-
-            ChatConsumer.session_user_color[self.room_name][self.channel_name][username] = color
-            # print(f"{self.channel_name}{ChatConsumer.session_user_color}")
-
-            msg = {
-                'type': type,
-                'username': username,
-                "color": color
-            }
+            # generate and save username color to chanel
+            ChatConsumer.session_user_color[self.room_name][self.channel_name][username] = ChatConsumer.rnd_color()
         elif type == "chat_message":
+            msg["message"] = data['message']
 
-            msg = {
-                'type': type,
-                'username': username,
-                'message': data['message'],
-                "color": ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
-            }
+        msg["color"] = ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
 
-        print(self.channel_name)
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, msg)
 
-    # Receive message from room group
+    # Receive join_message from room group
     def join_message(self, event):
         message = "join to the chat"
         username = event['username']
         color = event["color"]
-
-        print(username, self.channel_name)
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message,
             'username': username,
             "color": color
-            # "color": ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
         }))
 
     # Receive message from room group
@@ -96,5 +82,4 @@ class ChatConsumer(WebsocketConsumer):
             'message': message,
             'username': username,
             "color": color
-            # "color": ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
         }))
