@@ -34,8 +34,6 @@ function scrollToBottom() {
     objDiv.scrollTop = objDiv.scrollHeight;
 };
 
-
-
 const chatSocket = new WebSocket(
   'ws://'
   + window.location.host
@@ -50,10 +48,18 @@ chatSocket.onopen = () => chatSocket.send(JSON.stringify({
     'room': roomName
 }));
 
-
 chatSocket.onclose = function(e) {
   console.error('The socket closed unexpectedly');
 };
+
+window.onbeforeunload = confirmExit;
+function confirmExit(){
+    chatSocket.send(JSON.stringify({
+    'type': "leave_message",
+    'username': userName,
+    'room': roomName
+}));
+}
 
 chatSocket.onmessage = function(e) {
   const data = JSON.parse(e.data);

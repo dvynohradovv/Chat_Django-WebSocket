@@ -62,6 +62,8 @@ class ChatConsumer(WebsocketConsumer):
         if type == "join_message":
             # generate and save username color to chanel
             ChatConsumer.session_user_color[self.room_name][self.channel_name][username] = ChatConsumer.rnd_color()
+        elif type == "leave_message":
+            pass
         elif type == "chat_message":
             message = data['message']
             msg["message"] = message
@@ -76,6 +78,19 @@ class ChatConsumer(WebsocketConsumer):
     # Receive join_message from room group
     def join_message(self, event):
         message = "join to the chat"
+        username = event['username']
+        color = event["color"]
+
+        # Send message to WebSocket
+        self.send(text_data=json.dumps({
+            'message': message,
+            'username': username,
+            "color": color
+        }))
+
+    # Receive leave_message from room group
+    def leave_message(self, event):
+        message = "leave from the chat"
         username = event['username']
         color = event["color"]
 

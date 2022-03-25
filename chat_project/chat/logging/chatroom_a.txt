@@ -1,2 +1,6 @@
 2022-03-25 14:40:42.942929+00:00;Dima;Test logging
 2022-03-25 14:40:50.575234+00:00;admin;Logging working good
+2022-03-25 15:20:20.110290+00:00;admin;hello
+2022-03-25 15:20:31.183004+00:00;admin;im here again
+2022-03-25 15:21:35.069920+00:00;Dima;i have uniq color
+2022-03-25 15:21:41.910668+00:00;admin;a im too
