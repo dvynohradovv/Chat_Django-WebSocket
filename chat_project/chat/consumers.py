@@ -7,11 +7,15 @@ from channels.generic.websocket import WebsocketConsumer
 
 
 class ChatConsumer(WebsocketConsumer):
-    session_user_color = str()
+    session_user_color = {}
+
+    @staticmethod
+    def rnd_color():
+        return "#%06x" % random.randint(0, 0xFFFFFF)
 
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = 'chat_%s' % self.room_name
+        self.room_group_name = f'chat_{self.room_name}'
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -21,6 +25,8 @@ class ChatConsumer(WebsocketConsumer):
 
         self.accept()
 
+        ChatConsumer.session_user_color.setdefault(self.room_name, {}).setdefault(self.channel_name, {})
+
     def disconnect(self, close_code):
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
@@ -28,48 +34,67 @@ class ChatConsumer(WebsocketConsumer):
             self.channel_name
         )
 
+        ChatConsumer.session_user_color[self.room_name].pop(self.channel_name)
+
     # Receive message from WebSocket
     def receive(self, text_data):
         data = json.loads(text_data)
         type = data["type"]
+        username = data['username']
+
         msg = {}
-        if type == "chat_message":
+        if type == "join_message":
+
+            color = ChatConsumer.rnd_color()
+
+            ChatConsumer.session_user_color[self.room_name][self.channel_name][username] = color
+            # print(f"{self.channel_name}{ChatConsumer.session_user_color}")
+
             msg = {
-                'type': 'chat_message',
-                'message': data['message'],
-                'username': data['username']
+                'type': type,
+                'username': username,
+                "color": color
             }
-        elif type == "join_message":
+        elif type == "chat_message":
+
             msg = {
-                'type': 'join_message',
-                'username': data['username']
+                'type': type,
+                'username': username,
+                'message': data['message'],
+                "color": ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
             }
 
+        print(self.channel_name)
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, msg)
 
     # Receive message from room group
     def join_message(self, event):
-        self.session_user_color = "#%06x" % random.randint(0, 0xFFFFFF)
         message = "join to the chat"
         username = event['username']
+        color = event["color"]
+
+        print(username, self.channel_name)
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message,
             'username': username,
-            "color": self.session_user_color
+            "color": color
+            # "color": ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
         }))
 
     # Receive message from room group
     def chat_message(self, event):
         message = event['message']
         username = event['username']
+        color = event["color"]
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message,
             'username': username,
-            "color": self.session_user_color
+            "color": color
+            # "color": ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
         }))
