@@ -1,0 +1,2 @@
+2022-03-25 14:40:42.942929+00:00;Dima;Test logging
+2022-03-25 14:40:50.575234+00:00;admin;Logging working good

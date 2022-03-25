@@ -1,8 +1,14 @@
 import json
+import os
 import random
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+
+from chat_project.utils import Utils
+from django.utils import timezone
+
+DIRPATH = os.path.realpath(os.path.dirname(__file__))
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -11,6 +17,14 @@ class ChatConsumer(WebsocketConsumer):
     @staticmethod
     def rnd_color():
         return "#%06x" % random.randint(0, 0xFFFFFF)
+
+    @staticmethod
+    def logging_message(username, message, room_name):
+        logging_dir = os.path.join(DIRPATH, "logging")
+        Utils.folder_init(logging_dir)
+        filepath = os.path.join(logging_dir, f"chatroom_{room_name}.txt")
+        with open(filepath, 'a') as fs:
+            fs.write(f"{timezone.now()};{username};{message}\n")
 
     def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
@@ -49,7 +63,9 @@ class ChatConsumer(WebsocketConsumer):
             # generate and save username color to chanel
             ChatConsumer.session_user_color[self.room_name][self.channel_name][username] = ChatConsumer.rnd_color()
         elif type == "chat_message":
-            msg["message"] = data['message']
+            message = data['message']
+            msg["message"] = message
+            ChatConsumer.logging_message(username, message, self.room_name)
 
         msg["color"] = ChatConsumer.session_user_color[self.room_name][self.channel_name][username]
 
