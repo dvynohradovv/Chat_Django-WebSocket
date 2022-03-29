@@ -1,4 +1,4 @@
-# chat-django-websocket
+# Simple chat app on Django and WebSocket
 
 # `/chat/login/`
 ## ● - на входной страничке юзер задает свой юзернейм
