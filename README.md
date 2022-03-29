@@ -1,4 +1,4 @@
-# Chat_Django-WebSocket
+# chat-django-websocket
 
 # `/chat/login/`
 ## ● - на входной страничке юзер задает свой юзернейм
