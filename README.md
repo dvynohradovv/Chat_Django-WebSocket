@@ -1,6 +1,6 @@
 # Template chat app on Django and WebSocket
 ***
-<img src="https://user-images.githubusercontent.com/55922843/166743451-c175e580-68e6-4d10-8f70-638748ef727e.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="650" height="500" />
+<img src="https://user-images.githubusercontent.com/55922843/166743451-c175e580-68e6-4d10-8f70-638748ef727e.png" data-canonical-src="https://gyazo.com/eb5c5741b6a9a16c692170a41a49c858.png" width="500" height="500" />
 
 # Endpoints:
 ***
